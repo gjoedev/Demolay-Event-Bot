@@ -1,0 +1,5 @@
+{
+    "token" : "Your Bot token here",
+    "TimeZoneOffset" : "Time zone offset in hours, from GMT (Sometimes, It can change when running on linux machines), leave as 0 if running on windows",
+    "EventChannelID" : "ID of event channel"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "newdemolaybot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"node main.js\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^3.2.0",
+    "colors": "^1.4.0",
+    "concurrently": "^6.0.2",
+    "discord.js": "^12.5.3",
+    "wait-until": "0.0.2"
+  }
+}
