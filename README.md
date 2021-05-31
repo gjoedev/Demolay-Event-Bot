@@ -17,6 +17,13 @@ For Linux users, you can run:
 sudo apt install nodejs
 ```
 
+# Create a Discord Bot
+This link:
+
+https://www.howtogeek.com/364225/how-to-make-your-own-discord-bot/
+
+And stop where it says "Install Node.JS and get Coding"
+
 # Downloading (Windows)
 Downloading the bot is extreamly simple. Simply press the green "Code" Button at the top, and download it as a ZIP file. Extract it, and then proceed to first time startup.
 
