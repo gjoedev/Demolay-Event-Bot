@@ -83,6 +83,10 @@ client.on('message', message =>{
 
 var tevent
 function Scan(){
+    if(fs.readdirSync('./tmpalerts/').length >= 1){
+        console.log(colors.yellow('One event is already queued, not adding extra events to avoid memory exhaustion (Simply remove this If statement if the machine your running has more then enough RAM)'))
+        return;
+    }
     if(fs.readdirSync('./events/').length === 0){
         console.log(colors.yellow('Events Folder Empty, Skipping Scan'))
     } else {
