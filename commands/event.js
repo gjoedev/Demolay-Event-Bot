@@ -34,6 +34,12 @@ module.exports = {
                 var tdate = Math.floor(new Date(dates[2], dates[1] - 1, dates[0], +times[0] + +main.TimeZoneOffset, times[1]).getTime()/1000)
                 var cdate = Math.floor(new Date().getTime())/1000
 
+                if(dates[1] > 12 && contents[6] != "od" || dates[2] > 31 && contents[6] != "od"){
+                    const newEmbed = new Discord.MessageEmbed() .setColor('#FFB500') .setTitle('Warning!') .setDescription('Potential Date Failure') .addFields( {name: 'Reason', value: 'The Date/Month number isnt possible, its over the maximum amount of Dates/Months! To overide this, add "od" to the end of the date creation command.'})
+                    message.channel.send(newEmbed)
+                    return;
+                }
+
 
                 if(cdate < tdate){
                     var event = {
