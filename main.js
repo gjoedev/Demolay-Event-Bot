@@ -6,7 +6,6 @@ const colors = require('colors')
 const prefix = '!';
 const fs = require('fs');
 const waitUntil = require('wait-until')
-
 try {
     const configfile = JSON.parse(fs.readFileSync('./config.json', 'utf8'))
 } catch (err){
@@ -39,12 +38,13 @@ for(const file of commandFiles){
 client.once('ready', () =>{
     console.log(colors.green('Logged in at ' + token));
     var i = 0
-    var tmpalerts = fs.readdirSync('./tmpalerts/').filter(file => file.endsWith('.json'));
+    var tmpalerts = fs.readdirSync('./queue/').filter(file => file.endsWith('.json'));
             for(const file of tmpalerts){
-                fs.renameSync('./tmpalerts/' + file, './events/' + file)
+                fs.renameSync('./queue/' + file, './events/' + file)
                 i++;
             }
     Scan();
+    eventloop();
     client.user.setActivity("The time...", {
         type: "WATCHING"
     });
@@ -72,6 +72,10 @@ client.on('message', message =>{
     } else {
     if(command === 'forcescan'){
         Scan()
+    } else {
+    if(command === 'clear'){
+        client.commands.get('clear').execute(message, Discord)
+    }
     }
     }
     }
@@ -83,10 +87,6 @@ client.on('message', message =>{
 
 var tevent
 function Scan(){
-    if(fs.readdirSync('./tmpalerts/').length >= 1){
-        console.log(colors.yellow('One event is already queued, not adding extra events to avoid memory exhaustion (Simply remove this If statement if the machine your running has more then enough RAM)'))
-        return;
-    }
     if(fs.readdirSync('./events/').length === 0){
         console.log(colors.yellow('Events Folder Empty, Skipping Scan'))
     } else {
@@ -105,11 +105,8 @@ function Scan(){
                 events.sort()
                 if(events.length === 0){
                     console.log(colors.yellow('After changes (Most likely removal of empty event files), the events folder was found empty. Stopping alert process.'))
-                } else {
-                    tevent = events[0]
-                    StartAlerter()
                 }
-                }
+            }
 }
 
 
@@ -123,30 +120,103 @@ function StartAlerter(){
         console.log('Message file failed to load: ' + './notifier' + notifier)
     }));
     var messagecontent = messagefile.text.toString()
-    console.log(colors.green('Sucsessfully Loaded event ' + tdate + ' and ready to alert'))
-    sendalert(tdate, messagecontent)
+    fs.renameSync('./events/' + tdate + '.json', './queue/' + tdate + '.json')
+    // sendalert(tdate, messagecontent)
 }
 
-function sendalert(tdate, messagecontent){ 
-    var cdate = Math.floor(new Date().getTime())/1000
-   fs.renameSync('./events/' + tdate + '.json', './tmpalerts/' + tdate + '.json', function(err){
-        if(err){
-            console.log(colors.red('Issue moving file ' + tdate +', aborting alert'))
-            return;
+//Event queing loop
+async function eventloop(){
+    for(;;){
+        console.log('loop completed')
+        var qe = fs.readdirSync('./queue/')
+        qe.sort()
+        var t = qe[0]
+
+        var events = fs.readdirSync('./events/')
+        events.sort()
+
+        if(events.length === 0 && qe.length === 0){
+            await sleep(60000)
+        } else {
+
+        //Start pull events and check for event overides
+        if(events.length >= 1 && qe.length < 1){
+            fs.renameSync('./events/' +  events[0], './queue/' +  events[0])
+            console.log(colors.green('Sucsessfully Loaded event ' + events[0] + ' and ready to alert'));
+        } else {
+            if(events.length >= 1 && qe.length >= 1 && qe[0] > events[0]){
+                fs.renameSync('./queue/' + t, './events/' + t)
+                fs.renameSync('./events/' + events[0], + './queue/' + events[0])
+                console.log(colors.green('Replaced event ' + events[0] + ' with event ' + t + ' as it will accour sooner'));
+            }
         }
-    })
-    waitUntil(500, Infinity, function condition() {
-        cdate = Math.floor(new Date().getTime())/1000
-        var conditionthing = cdate >= tdate
-        return (conditionthing ? true : false);
-    }, function done(result) {
-        if(result === true){
+        //End pull events and check for overide
+
+        //Start Alert
+
+        var qe = fs.readdirSync('./queue/')
+        qe.sort()
+        var t = qe[0]
+
+        
+        if(qe.length === 0){
+            await sleep(60000)
+        } else {
+
+       if(qe.length >= 1){
+            delete qe[0]
+            qe.forEach(element =>{
+                console.log('poop')
+                fs.renameSync('./queue/' + qe[0], './events/' + qe[0])
+            })
+        }
+        var json = JSON.parse(fs.readFileSync('./queue/' +  t))
+        var messagecontent = JSON.parse(fs.readFileSync('./notifier/' + json.notifier)).text.toString()
+        var teatime = json.epochtime.toString() //get it because the name of the variable was 't' and ttime sounds like tea time??? yeah? no? why?
+
+        // console.log(Math.floor(new Date().getTime()/1000 + TimeZoneOffset))
+
+        if(teatime <= Math.floor(new Date().getTime()/1000 + TimeZoneOffset)){
             client.channels.cache.get(eventchannelid.toString()).send(messagecontent)
-            console.log(colors.green('Sucsessfully Alerted and moved event ' + tdate))
-            fs.renameSync('./tmpalerts/' + tdate + '.json', './pastevents/' + tdate + '.json')
-            Scan();
+            console.log(colors.green('Sucsessfully Alerted and moved event ' + t))
+            fs.renameSync('./queue/' + t, './pastevents/' + t)
         }
-    });
+        await sleep(60000)
+        //End Alert
+        }
+    }
+    }
 }
+
+function sleep(ms) { //https://stackoverflow.com/questions/14249506/how-can-i-wait-in-node-js-javascript-l-need-to-pause-for-a-period-of-time
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    });
+  }   
+//End event queing loop
+
+
+
+// function sendalert(tdate, messagecontent){ 
+//     var cdate = Math.floor(new Date().getTime())/1000
+//    fs.renameSync('./events/' + tdate + '.json', './tmpalerts/' + tdate + '.json', function(err){
+//         if(err){
+//             console.log(colors.red('Issue moving file ' + tdate +', aborting alert'))
+//             return;
+//         }
+//     })
+//     waitUntil(500, Infinity, function condition() {
+//         cdate = Math.floor(new Date().getTime())/1000
+//         var conditionthing = cdate >= tdate
+//         return (conditionthing ? true : false);
+//     }, function done(result) {
+//         if(result === true){
+//             client.channels.cache.get(eventchannelid.toString()).send(messagecontent)
+//             console.log(colors.green('Sucsessfully Alerted and moved event ' + tdate))
+//             fs.renameSync('./tmpalerts/' + tdate + '.json', './pastevents/' + tdate + '.json')
+//             Scan();
+//         }
+//     });
+// }
 
 client.login(token);
