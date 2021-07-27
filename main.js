@@ -127,7 +127,6 @@ function StartAlerter(){
 //Event queing loop
 async function eventloop(){
     for(;;){
-        console.log('loop completed')
         var qe = fs.readdirSync('./queue/')
         qe.sort()
         var t = qe[0]
