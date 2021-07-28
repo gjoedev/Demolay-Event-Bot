@@ -13,11 +13,21 @@ module.exports = {
             var list = new Discord.MessageEmbed() .setColor('#004D7C') .setTitle('List') .setDescription('List of all active events')
             var i = 1
             var events = fs.readdirSync('./events/').filter(file => file.endsWith('.json'));
-            for(const file of events){
-                let rawdata = fs.readFileSync('./events/' + file);
+            var queued = fs.readdirSync('./queue/').filter(file => file.endsWith('.json')).sort()[0]
+            if(queued != undefined){
+                let rawdata = fs.readFileSync('./queue/' + queued);
                 let cJSON = JSON.parse(rawdata);
-                list.addFields({name: 'Event ' + i, value: 'Name: ' + cJSON.name + ' Date: ' + cJSON.date + ' Time: ' + cJSON.time + ' Notifier: ' + cJSON.notifier})
-                i++;
+                list.addFields({name: 'Queued Event ' + i, value: 'Name: ' + cJSON.name + ' Date: ' + cJSON.date + ' Time: ' + cJSON.time + ' Notifier: ' + cJSON.notifier})
+            }
+            if(queued == undefined && events.length === 0){
+                list.addFields({name: 'No active events!', value: 'No inactive or queued events!'})
+            } else {
+                for(const file of events){
+                    let rawdata = fs.readFileSync('./events/' + file);
+                    let cJSON = JSON.parse(rawdata);
+                    list.addFields({name: 'Event ' + i, value: 'Name: ' + cJSON.name + ' Date: ' + cJSON.date + ' Time: ' + cJSON.time + ' Notifier: ' + cJSON.notifier})
+                    i++;
+                }
             }
             message.channel.send(list);
         } else {
