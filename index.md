@@ -12,4 +12,4 @@ The demolay event bot uses the [Discord.JS framework](https://discord.js.org/#/)
 
 
 
-<link rel="stylesheet" href="./index.css/"/>
+<link rel="stylesheet" href="/stylesheets/index.css"/>
