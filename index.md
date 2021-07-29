@@ -22,18 +22,15 @@ Just want the downloads without looking through the source code? Thats fine, the
 * [Windows Download](./downloads/Demolay-Event-Bot-Windows.zip)
 * [Luinx Download](downloads/Demolay-Event-Bot-Luinix.tar)
 * Download with git:
-```git
-git clone https://github.com/gjoedev/Demolay-Event-Bot.git
-```
+    ```
+    git clone https://github.com/gjoedev/Demolay-Event-Bot.git
+    ```
+
+
 ### Setup
 The full setup can be found [here](https://1drv.ms/w/s!ArXnJdAp_FG1hvRZzKuX1keBNcthzA?e=5zOn43), but if you already have a discord bot setup, simply the FirstTimeStart script to install node modules and remove .gitignore files, edit config.json with the needed values, then run the Start script, or use a command window in that directory and type:
-```node
+```
 node .
 ```
 To run the bot.
-
-
-
-
-
 <link rel="stylesheet" href="/stylesheets/index.css"/>
