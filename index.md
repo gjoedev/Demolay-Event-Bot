@@ -1,5 +1,5 @@
 ---
-layout: deafault
+layout: center
 ---
 ## Demolay Event Bot
 ### About
