@@ -1,6 +1,7 @@
 ---
-layout: default
+layout: deafault
 ---
+
 ## Demolay Event Bot
 ### About
 The demolay event bot is a Discord Bot I set up that allows Demolay chapters with their own discord servers to organize their events with this bot. Its somewhat easy to set up, and the documentation can be found [Here](https://1drv.ms/w/s!ArXnJdAp_FG1hvRZzKuX1keBNcthzA?e=5zOn43). If you need further help, contact me VIA discord at gjoe#0001
@@ -19,7 +20,7 @@ Although this may be simple for an *advanced* developer, its still somewhat impr
 ### Downloads
 Just want the downloads without looking through the source code? Thats fine, these links should be able to help:
 * [Windows Download](./downloads/Demolay-Event-Bot-Windows.zip)
-* [Luinid Download](downloads/Demolay-Event-Bot-Luinix.tar)
+* [Luinx Download](downloads/Demolay-Event-Bot-Luinix.tar)
 * Download with git:
 ```git
 git clone https://github.com/gjoedev/Demolay-Event-Bot.git
@@ -29,7 +30,7 @@ The full setup can be found [here](https://1drv.ms/w/s!ArXnJdAp_FG1hvRZzKuX1keBN
 ```node
 node .
 ```
-To run the bot
+To run the bot.
 
 
 
