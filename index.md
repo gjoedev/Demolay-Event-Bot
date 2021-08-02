@@ -20,7 +20,7 @@ Although this may be simple for an *advanced* developer, its still somewhat impr
 ### Downloads
 Just want the downloads without looking through the source code? Thats fine, these links should be able to help:
 * [Windows Download](./downloads/Demolay-Event-Bot-Windows.zip)
-* [Luinx Download](downloads/Demolay-Event-Bot-Luinix.tar)
+* [Luinx Download](./downloads/Demolay-Event-Bot-Luinix.tar)
 * Download with git:
     ```
     git clone https://github.com/gjoedev/Demolay-Event-Bot.git
