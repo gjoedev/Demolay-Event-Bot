@@ -1,9 +1,10 @@
 const path = require('path')
+const fs = require('fs')
 
 module.exports = {
     name: 'notifier',
     description: 'Sets the message for an event',
-    execute(message, args, Discord, fs){
+    execute(message, args, Discord){
 
         const contents = message.content.split(/[ ,]/)
 
@@ -13,7 +14,6 @@ module.exports = {
         } else {
             if(contents[1] == 'add'){
                 const Name = contents[2]
-                var commandstr = contents[0] + contents[1] + contents[2]
                 var textstr = contents.slice(3).join(' ');
                 var notifierARR = {
                     'name' : Name,
@@ -48,8 +48,14 @@ module.exports = {
                         }
                     })
                 } else {
-                    const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to Use !notifier') .addFields( {name: 'Reason', value: 'Invalid syntax, do !notifier help for more'})
-                    message.channel.send(newEmbed)
+                    if(contents[1] == 'edit'){
+                        var tfile = contents[2]
+                        var tfilec = JSON.parse(fs.readFileSync('../events/' + tfile + '.json'))
+                        console.log(tfilec)
+                    } else {
+                        const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to Use !notifier') .addFields( {name: 'Reason', value: 'Invalid syntax, do !notifier help for more'})
+                        message.channel.send(newEmbed)
+                    }
                 }
             }
         }
