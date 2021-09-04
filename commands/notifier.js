@@ -60,7 +60,7 @@ module.exports = {
                         console.log(tfilee)
                         var tfile = JSON.parse(tfilee)
                         console.log(tfile)
-                        fs.unlinkSync('./notifier/' + tfile + '.json', function(err){
+                        fs.unlinkSync('./notifier/' + t + '.json', function(err){
                             if(err){
                                 const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Error while removing file:', value: '```' + err.toString() + '```'})
                                 message.channel.send(newEmbed)
