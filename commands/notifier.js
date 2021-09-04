@@ -56,7 +56,15 @@ module.exports = {
                         }
                         var t = contents[2]
                         console.log(t)
-                        var tfilee = fs.readFileSync('./notifier/' + t + '.json')
+                        var tfilee = fs.readFileSync('./notifier/' + t + '.json', function(err){
+                            if(err){
+                                if(err.code === 'ENOENT'){
+                                    const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Reason:', value: 'Notifier is non-existant, do !list notifiers for a list of avaliable notifiers'})
+                                    message.channel.send(newEmbed)
+                                    return;
+                                }
+                            }
+                        })
                         console.log(tfilee)
                         var tfile = JSON.parse(tfilee)
                         console.log(tfile)
