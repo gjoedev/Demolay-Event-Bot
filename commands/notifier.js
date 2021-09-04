@@ -50,7 +50,7 @@ module.exports = {
                 } else {
                     if(contents[1] == 'edit'){
                         var t = contents[2]
-                        var tfile = JSON.parse(fs.readdirSync('./notifier/' + t + '.json'))
+                        var tfile = JSON.parse(fs.readFileSync('./notifier/' + t + '.json'))
                         console.log(tfile)
                     } else {
                         const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to Use !notifier') .addFields( {name: 'Reason', value: 'Invalid syntax, do !notifier help for more'})
