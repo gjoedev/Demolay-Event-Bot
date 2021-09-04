@@ -56,15 +56,16 @@ module.exports = {
                         }
                         var t = contents[2]
                         console.log(t)
-                        var tfilee = fs.readFileSync('./notifier/' + t + '.json', function(err){
-                            if(err){
-                                if(err.code === 'ENOENT'){
-                                    const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Reason:', value: 'Notifier is non-existant, do !list notifiers for a list of avaliable notifiers'})
-                                    message.channel.send(newEmbed)
-                                    return;
-                                }
+                        try{
+                            var tfilee = fs.readFileSync('./notifier/' + t + '.json')
+                        } catch(err) {
+                            if(err.code == 'ENOENT'){
+                                const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Reason:', value: 'Nonexistant notifier, run !notifier help for list of available notifiers'})
+                                message.channel.send(newEmbed)
+                                return;
                             }
-                        })
+                        }
+                        var tfilee = fs.readFileSync('./notifier/' + t + '.json')
                         console.log(tfilee)
                         var tfile = JSON.parse(tfilee)
                         console.log(tfile)
