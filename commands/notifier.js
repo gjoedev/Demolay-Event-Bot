@@ -67,7 +67,7 @@ module.exports = {
                                 return;
                             }
                         })
-                        var ntext = contents[3].slice('3').join(' ')
+                        var ntext = contents.slice('3').join(' ')
                         var newarr = {
                             'name' : tfile.name,
                             'text' : ntext
