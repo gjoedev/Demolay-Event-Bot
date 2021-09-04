@@ -58,7 +58,7 @@ module.exports = {
                         console.log(t)
                         var tfilee = fs.readFileSync('./notifier/' + t + '.json')
                         console.log(tfilee)
-                        var tfile =JSON.prase(tfilee)
+                        var tfile = JSON.parse(tfilee)
                         console.log(tfile)
                         fs.unlinkSync('./notifier/' + tfile + '.json', function(err){
                             if(err){
