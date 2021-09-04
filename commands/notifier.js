@@ -56,13 +56,7 @@ module.exports = {
                         }
                         var t = contents[2]
                         console.log(t)
-                        var tfile = JSON.parse(fs.readFileSync('./notifier/' + t + '.json'), function(err){
-                            if(err){
-                                const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Error while reading file:', value: '```' + err.toString() + '```'})
-                                message.channel.send(newEmbed)
-                                return;
-                            }
-                        })
+                        var tfile = fs.readFileSync('./notifier/' + t + '.json')
                         console.log(tfile)
                         fs.unlinkSync('./notifier/' + tfile + '.json', function(err){
                             if(err){
