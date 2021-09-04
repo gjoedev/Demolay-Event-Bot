@@ -49,9 +49,41 @@ module.exports = {
                     })
                 } else {
                     if(contents[1] == 'edit'){
+                        if(contents[2] == undefined || contents[3] == undefined){
+                            const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Reason:', value: 'Invalid syntax, do !notifier help for more'})
+                            message.channel.send(newEmbed)
+                            return;
+                        }
                         var t = contents[2]
-                        var tfile = JSON.parse(fs.readFileSync('./notifier/' + t + '.json'))
-                        console.log(tfile)
+                        var tfile = JSON.parse(fs.readFileSync('./notifier/' + t + '.json'), function(err){
+                            if(err){
+                                const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Error while reading file:', value: '```' + err.toString() + '```'})
+                                message.channel.send(newEmbed)
+                                return;
+                            }
+                        })
+                        fs.unlinkSync('./notifier/' + tfile + '.json', function(err){
+                            if(err){
+                                const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Error while removing file:', value: '```' + err.toString() + '```'})
+                                message.channel.send(newEmbed)
+                                return;
+                            }
+                        })
+                        var ntext = contents[3].slice('3').join(' ')
+                        var contents = {
+                            'name' : tfile.name,
+                            'text' : ntext
+                        }
+                        var contents =  JSON.stringify(contents)
+                        fs.writeFileSync('./notifier/' + tfile.name + '.json', contents, function(err){
+                            if(err){
+                                const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to edit notifier') .addFields( {name: 'Error while writing file:', value: '```' + err.toString() + '```'})
+                                message.channel.send(newEmbed)
+                                return;
+                            }
+                        })
+                        const embed = new Discord.MessageEmbed().setColor('#12CB3C').setTitle('Succsess!').setDescription('Notifier edited Sucsessfully').addFields({name: 'Notifier Edited:', value: tfile.name}, {name: 'New Contents:', value: ntext})
+                        message.channel.send(embed)
                     } else {
                         const newEmbed = new Discord.MessageEmbed() .setColor('#D82B00') .setTitle('Failure!') .setDescription('Failed to Use !notifier') .addFields( {name: 'Reason', value: 'Invalid syntax, do !notifier help for more'})
                         message.channel.send(newEmbed)
