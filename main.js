@@ -77,7 +77,7 @@ client.on('message', message =>{
         client.commands.get('clear').execute(message, Discord)
     } else {
         if(command === 'timetest'){{
-            message.channel.send('Hosted machine time: ' + Mathf.floor(new Date().getTime()));
+            message.channel.send('Hosted machine time: ' + Math.floor(new Date().getTime()));
             message.channel.send('Time with offset: ' + Math.floor(new Date().getTime()/1000 + TimeZoneOffset))
         }}
     }
