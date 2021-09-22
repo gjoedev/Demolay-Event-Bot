@@ -21,7 +21,7 @@ try {
 const configfile = JSON.parse(fs.readFileSync('./config.json', 'utf8'))
 const token = configfile.token
 const eventchannelid = configfile.EventChannelID
-const TimeZoneOffset = parseInt(configfile.TimeZoneOffset)
+const TimeZoneOffset = parseInt(configfile.TimeZoneOffset * 3600)
 module.exports = { Scan, TimeZoneOffset };
 //End Config
 
